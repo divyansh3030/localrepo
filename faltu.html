@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to My Page</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: linear-gradient(to bottom, #f2f2f2, #ccc);
+      margin: 0;
+      height: 100vh;
+      transition: background-color 0.5s ease;
+    }
+
+    .dark-mode {
+      background-image: linear-gradient(to bottom, #2e2e2e, #1c1c1c);
+      color: #fff;
+    }
+
+    .container {
+      width: 80%;
+      margin: 50px auto;
+      padding: 25px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .dark-mode .container {
+      background-color: #444;
+      color: #f1f1f1;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #00698f;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: #00698f;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #004c66;
+    }
+
+    iframe {
+      width: 80%;
+      height: 315px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="heading">Welcome to My Page!</h1>
+    <p id="description">This is a simple web page with dynamic features.</p>
+    <button class="btn" onclick="changeContent()">Change Content</button>
+    <button class="btn" onclick="toggleVideo()">Play/Pause Video</button>
+    <button class="btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <!-- Embedded YouTube Video -->
+    <iframe id="myVideo" src="https://www.youtube.com/embed/tgbNymZ7vqY?enablejsapi=1" allowfullscreen></iframe>
+  </div>
+
+  <div class="footer">
+    &copy; <span id="year"></span> My Page
+  </div>
+
+  <script>
+    // Toggle content text
+    let toggled = false;
+    function changeContent() {
+      const heading = document.getElementById("heading");
+      const description = document.getElementById("description");
+      if (!toggled) {
+        heading.innerHTML = "Thanks for interacting!";
+        description.innerHTML = "You’ve triggered a dynamic response.";
+      } else {
+        heading.innerHTML = "Welcome to My Page!";
+        description.innerHTML = "This is a simple web page with dynamic features.";
+      }
+      toggled = !toggled;
+    }
+
+    // Add current year
+    document.getElementById("year").innerHTML = new Date().getFullYear();
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // Play/Pause YouTube video (via postMessage)
+    let videoPlaying = false;
+    function toggleVideo() {
+      const iframe = document.getElementById("myVideo").contentWindow;
+      const command = videoPlaying ? 'pauseVideo' : 'playVideo';
+      iframe.postMessage('{"event":"command","func":"' + command + '","args":""}', '*');
+      videoPlaying = !videoPlaying;
+    }
+  </script>
+</body>
+</html>

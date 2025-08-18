@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dynamic Timetable</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            flex-grow: 1;
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        header select,
+        header input[type="date"],
+        header button,
+        header input[type="text"] {
+            padding: 6px 12px;
+            font-size: 1rem;
+            border: 1.5px solid #007bff;
+            border-radius: 5px;
+            outline: none;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        header select:focus,
+        header input[type="date"]:focus,
+        header button:hover,
+        header input[type="text"]:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.6);
+        }
+
+        header button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            min-width: 80px;
+            font-weight: 600;
+        }
+
+        h2 {
+            text-align: center;
+            color: #444;
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            min-width: 120px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            header h1 {
+                flex-grow: 0;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+
+        section#addEntry {
+            margin-top: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        form#addEntryForm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            flex: 1;
+            min-width: 150px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1.5px solid #007bff;
+            border-radius: 5px;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        button#addButton {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 0 0 auto;
+            min-width: 100px;
+            transition: background-color 0.3s ease;
+        }
+
+        button#addButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Proctor</h1>
+            <select id="academicYear" aria-label="Select Academic Year">
+                <option>Academic Year: 2024-2025</option>
+            </select>
+            <input type="date" id="searchDate" aria-label="Select Date" />
+            <button id="searchButton">Search</button>
+        </header>
+
+        <h2>Timetable for B.Tech (CSE) 2022-23 III Sem VI / Date: 26 May 2025 To 01 Jun 2025</h2>
+
+        <table id="timetable">
+            <thead>
+                <tr>
+                    <th scope="col">Time Slots</th>
+                    <th scope="col" data-day="Monday" data-date="26/05/25">Monday 26/05/25</th>
+                    <th scope="col" data-day="Tuesday" data-date="27/05/25">Tuesday 27/05/25</th>
+                    <th scope="col" data-day="Wednesday" data-date="28/05/25">Wednesday 28/05/25</th>
+                    <th scope="col" data-day="Thursday" data-date="29/05/25">Thursday 29/05/25</th>
+                    <th scope="col" data-day="Friday" data-date="30/05/25">Friday 30/05/25</th>
+                    <th scope="col" data-day="Saturday" data-date="31/05/25">Saturday 31/05/25</th>
+                    <th scope="col" data-day="Sunday" data-date="01/06/25">Sunday 01/06/25</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-timeslot="08:00 - 08:50">
+                    <td>08:00 - 08:50</td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- GUA620T (PP) - GUA620T-Section-1 (GU_A-106)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- OUA6031 (PR) - Section-53 (GU_A-322)</td>
+                </tr>
+                <tr data-timeslot="08:50 - 09:40">
+                    <td>08:50 - 09:40</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC626C (PP) - RIUC626C-Section-53 (GU_A-321)</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC635B (PP) - RIUC635B-Section-6 (GU_A-320)</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- GUA620T (PP) - GUA620T-Section-1 (GU_A-106)</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC635B (PP) - RIUC635B-Section-6 (GU_A-320)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr data-timeslot="09:45 - 10:35">
+                    <td>09:45 - 10:35</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- OUA6031 (PR) - Section-53 (GU_A-321)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-321)</td>
+                </tr>
+                <tr data-timeslot="10:35 - 11:25">
+                    <td>10:35 - 11:25</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- OUA6031 (PR) - Section-53 (GU_A-321)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-321)</td>
+                </tr>
+                <tr data-timeslot="11:30 - 12:20">
+                    <td>11:30 - 12:20</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-321)</td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601c (PR) - Section-53 (GU_A-321)</td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-321)</td>
+                </tr>
+                <tr data-timeslot="12:20 - 13:10">
+                    <td>12:20 - 13:10</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-421)</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-321)</td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601c (PR) - Section-53 (GU_A-321)</td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-225)</td>
+                </tr>
+                <tr data-timeslot="13:15 - 14:05">
+                    <td>13:15 - 14:05</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC626C (PP) - RIUC626C-Section-53 (GU_A-322)</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PP) - RIUC601B-Section-53 (GU_A-504)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr data-timeslot="14:05 - 14:55">
+                    <td>14:05 - 14:55</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr data-timeslot="15:00 - 15:50">
+                    <td>15:00 - 15:50</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC635B (PR) - NLP_SEC6_P1 (GU_A-207)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr data-timeslot="15:50 - 16:40">
+                    <td>15:50 - 16:40</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC635B (PR) - NLP_SEC6_P1 (GU_A-207)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr data-timeslot="16:45 - 17:35">
+                    <td>16:45 - 17:35</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-426)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC627B (PR) - Section-53 (GU_A-104)</td>
+                </tr>
+                <tr data-timeslot="17:35 - 18:25">
+                    <td>17:35 - 18:25</td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC601B (PR) - Section-53 (GU_A-426)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>B.Tech (CSE) 2022-23 III Sem VI- RIUC627B (PR) - Section-53 (GU_A-104)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <section id="addEntry">
+            <h3>Add Timetable Entry</h3>
+            <form id="addEntryForm">
+                <label for="daySelect">
+                    Day:
+                    <select id="daySelect" required>
+                        <option value="" disabled selected>Select day</option>
+                        <option value="1">Monday 26/05/25</option>
+                        <option value="2">Tuesday 27/05/25</option>
+                        <option value="3">Wednesday 28/05/25</option>
+                        <option value="4">Thursday 29/05/25</option>
+                        <option value="5">Friday 30/05/25</option>
+                        <option value="6">Saturday 31/05/25</option>
+                        <option value="7">Sunday 01/06/25</option>
+                    </select>
+                </label>
+
+                <label for="timeSelect">
+                    Time Slot:
+                    <select id="timeSelect" required>
+                        <option value="" disabled selected>Select time</option>
+                        <option value="08:00 - 08:50">08:00 - 08:50</option>
+                        <option value="08:50 - 09:40">08:50 - 09:40</option>
+                        <option value="09:45 - 10:35">09:45 - 10:35</option>
+                        <option value="10:35 - 11:25">10:35 - 11:25</option>
+                        <option value="11:30 - 12:20">11:30 - 12:20</option>
+                        <option value="12:20 - 13:10">12:20 - 13:10</option>
+                        <option value="13:15 - 14:05">13:15 - 14:05</option>
+                        <option value="14:05 - 14:55">14:05 - 14:55</option>
+                        <option value="15:00 - 15:50">15:00 - 15:50</option>
+                        <option value="15:50 - 16:40">15:50 - 16:40</option>
+                        <option value="16:45 - 17:35">16:45 - 17:35</option>
+                        <option value="17:35 - 18:25">17:35 - 18:25</option>
+                    </select>
+                </label>
+
+                <label for="descriptionInput" style="flex: 2; min-width: 300px;">
+                    Description:
+                    <input type="text" id="descriptionInput" placeholder="Enter class details" required />
+                </label>
+
+                <button id="addButton" type="submit">Add</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('addEntryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const dayIndex = document.getElementById('daySelect').value;
+            const timeSlot = document.getElementById('timeSelect').value;
+            const description = document.getElementById('descriptionInput').value.trim();
+
+            if (!dayIndex || !timeSlot || !description) {
+                alert('Please fill all fields.');
+                return;
+            }
+
+            const rows = document.querySelectorAll('#timetable tbody tr');
+            let targetRow = null;
+
+            for (const row of rows) {
+                if (row.getAttribute('data-timeslot') === timeSlot) {
+                    targetRow = row;
+                    break;
+                }
+            }
+
+            if (!targetRow) {
+                alert('Invalid time slot selected.');
+                return;
+            }
+
+            // cells[0] is time slot, so dayIndex matches index in cells
+            const targetCell = targetRow.cells[parseInt(dayIndex)];
+
+            if (!targetCell) {
+                alert('Invalid day selected.');
+                return;
+            }
+
+            // Append new entry with separator if not empty
+            if (targetCell.textContent.trim().length > 0) {
+                targetCell.innerHTML += '<br><hr style="border: none; border-top: 1px solid #ccc; margin: 6px 0;">' + escapeHtml(description);
+            } else {
+                targetCell.textContent = description;
+            }
+
+            this.reset();
+        });
+
+        // Escape HTML to prevent injection
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
+
